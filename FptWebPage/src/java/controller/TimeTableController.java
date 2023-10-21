@@ -69,7 +69,7 @@ public class TimeTableController extends HttpServlet {
         request.setAttribute("to", to);
         request.setAttribute("sessions", sessions);
 
-        request.getRequestDispatcher("../view/instructor/timetable.jsp").forward(request, response);
+        request.getRequestDispatcher("view/timetable.jsp").forward(request, response);
 
     }
 

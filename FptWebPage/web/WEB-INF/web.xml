@@ -10,7 +10,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>TimeTableController</servlet-name>
-        <servlet-class>controller.instructor.TimeTableController</servlet-class>
+        <servlet-class>controller.TimeTableController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TimeTableController</servlet-name>
