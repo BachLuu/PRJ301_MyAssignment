@@ -13,24 +13,26 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form action="timetable" method="GET">
-            <input type="hidden" name="id" value="${param.id}"/>
-            From <input type="date" value="${requestScope.from}" name="from"/> 
-            To <input type="date" value="${requestScope.to}" name="to"/> 
-            <input type="submit" value="View"/>
-        </form>
+        <div style="text-align: center">
+            <form action="timetable" method="GET">
+                <input type="hidden" name="id" value="${param.id}"/>
+                From <input type="date" value="${requestScope.from}" name="from"/> 
+                To <input type="date" value="${requestScope.to}" name="to"/> 
+                <input type="submit" value="View"/>
+            </form>
+        </div>
         <table border="1px">
             <tr>
-                <td></td>
-                <c:forEach items="${requestScope.dates}" var="d">
-                    <td>
+                <th>Slot</th>
+                    <c:forEach items="${requestScope.dates}" var="d">
+                    <th>
                         ${d}
-                    </td>
+                    </th>
                 </c:forEach>
             </tr>
             <c:forEach items="${requestScope.slots}" var="s" varStatus="loop">
                 <tr>
-                    <td>${s.id}-${s.description}</td>
+                    <td>${s.id}.${s.description}</td>
                     <c:forEach items="${requestScope.dates}" var="d">
                         <td>
                             <c:forEach items="${requestScope.sessions}" var="k">

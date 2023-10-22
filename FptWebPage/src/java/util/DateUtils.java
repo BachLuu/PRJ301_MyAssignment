@@ -16,10 +16,11 @@ import java.util.List;
  * @author sonnt
  */
 public class DateUtils {
-        public static List<Date> getDatesOfCurrentWeek() {
+
+    public static List<Date> getDatesOfCurrentWeek() {
         List<Date> dates = new ArrayList<>();
         Calendar cal = Calendar.getInstance();  // gets the current date and time
-        
+
         // Set the calendar to the start of today
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
@@ -32,7 +33,6 @@ public class DateUtils {
         if (offset < 0) {
             offset += 7;
         }
-
         // Rewind the calendar to last Monday. It's the start of the week
         cal.add(Calendar.DATE, -offset);
 
@@ -45,7 +45,8 @@ public class DateUtils {
 
         return dates;
     }
-        public static List<Date> getSQLDatesBetween(String start, String end) throws ParseException {
+
+    public static List<Date> getSQLDatesBetween(String start, String end) throws ParseException {
         List<Date> dates = new ArrayList<>();
 
         // Define a simple date format, e.g., "2023-01-01"

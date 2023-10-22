@@ -4,44 +4,20 @@
  */
 package controller;
 
+import dal.assignment.AdminDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Admin;
 
 /**
  *
  * @author Luu Bach
  */
 public class loginController extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet loginController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet loginController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -69,7 +45,17 @@ public class loginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        AdminDBContext a = new AdminDBContext();
+        String username_raw = request.getParameter("username");
+        String password_raw = request.getParameter("password");
+        Admin ad = new Admin();
+        ad.setUsername(username_raw);
+        ad.setPassword(password_raw);
+        if (a.get(ad) == null) {
+            response.getWriter().println("Invalid username or password!");
+        } else {
+            response.sendRedirect("home.html");
+        }
     }
 
     /**
