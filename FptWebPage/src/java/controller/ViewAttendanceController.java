@@ -4,29 +4,21 @@
  */
 package controller;
 
-import dal.assignment.SessionDBContext;
-import dal.assignment.TimeSlotDBContext;
+import dal.assignment.GroupDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.Date;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.Session;
-import model.TimeSlot;
-import util.DateUtils;
-import static util.DateUtils.getSQLDatesBetween;
+import java.util.List;
+import model.Group;
 
 /**
  *
- * @author sonnt
+ * @author Luu Bach
  */
-public class TimeTableController extends HttpServlet {
+public class ViewAttendanceController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,36 +32,18 @@ public class TimeTableController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        int id = Integer.parseInt(request.getParameter("iid"));
-        String s_from = request.getParameter("from");
-        String s_to = request.getParameter("to");
-        ArrayList<Date> dates = new ArrayList<>();
-        if (s_from == null)// this week
-        {
-            dates = (ArrayList<Date>) DateUtils.getDatesOfCurrentWeek();
-        } else {
-            try {
-                dates = (ArrayList<Date>) getSQLDatesBetween(s_from, s_to);
-            } catch (ParseException ex) {
-                Logger.getLogger(TimeTableController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        try ( PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ViewAttendanceController</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ViewAttendanceController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        Date from = dates.get(0);
-        Date to = dates.get(dates.size() - 1);
-
-        TimeSlotDBContext timeDB = new TimeSlotDBContext();
-        ArrayList<TimeSlot> slots = timeDB.list();
-
-        SessionDBContext sesDB = new SessionDBContext();
-        ArrayList<Session> sessions = sesDB.getSessions(id, from, to);
-
-        request.setAttribute("slots", slots);
-        request.setAttribute("dates", dates);
-        request.setAttribute("from", from);
-        request.setAttribute("to", to);
-        request.setAttribute("sessions", sessions);
-
-        request.getRequestDispatcher("view/timetable.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -84,7 +58,9 @@ public class TimeTableController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        GroupDBContext groupDB = new GroupDBContext();
+        List<Group> groups = groupDB.list();
+
     }
 
     /**

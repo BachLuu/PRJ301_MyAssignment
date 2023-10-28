@@ -1,0 +1,40 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 23, 2023, 11:07:30 AM
+    Author     : Luu Bach
+*/
+
+.header {
+    background-color: orange; /* Blue background color with transparency */
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Center vertically within the header */
+}
+body {
+    background-image: url("../img/fpt_university.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.logo {
+    margin-left: 20px;
+}
+
+.logo img {
+    width: 15%; /* Make the logo fill the available space */
+}
+
+/* Navigation links styles */
+.nav-links {
+    margin-right: 20px;
+}
+
+.nav-links a {
+    color: #fff; /* Link text color */
+    text-decoration: none; /* Remove underline from links */
+    margin-left: 20px; /* Spacing between links */
+}

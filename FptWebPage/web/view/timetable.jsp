@@ -10,12 +10,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Schedule</title>
+        <link rel="stylesheet" type="text/css" href="style/timetable.css">
     </head>
     <body>
         <div style="text-align: center">
             <form action="timetable" method="GET">
-                <input type="hidden" name="id" value="${param.id}"/>
+                <input type="hidden" name="iid" value="${sessionScope.iid}"/>
                 From <input type="date" value="${requestScope.from}" name="from"/> 
                 To <input type="date" value="${requestScope.to}" name="to"/> 
                 <input type="submit" value="View"/>
@@ -30,15 +31,21 @@
                     </th>
                 </c:forEach>
             </tr>
-            <c:forEach items="${requestScope.slots}" var="s" varStatus="loop">
+            <c:forEach items="${requestScope.slots}" var="s">
                 <tr>
                     <td>${s.id}.${s.description}</td>
                     <c:forEach items="${requestScope.dates}" var="d">
                         <td>
                             <c:forEach items="${requestScope.sessions}" var="k">
                                 <c:if test="${k.date eq d and k.slot.id eq s.id}">
-                                    <a href="att?id=${k.id}">
+                                    <a href="attend?id=${k.id}">
                                         ${k.group.name}-${k.group.subject.name}-${k.room.id}
+                                        <c:if test="${k.isAttend}">
+                                            (attended)
+                                        </c:if>
+                                        <c:if test="${!k.isAttend}">
+                                            (not yet)
+                                        </c:if>
                                     </a>
                                 </c:if>
                             </c:forEach>

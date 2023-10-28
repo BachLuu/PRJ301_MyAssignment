@@ -2,7 +2,15 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
         <servlet-name>loginController</servlet-name>
-        <servlet-class>controller.loginController</servlet-class>
+        <servlet-class>controller.LoginController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AttendanceController</servlet-name>
+        <servlet-class>controller.AttendanceController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewAttendanceController</servlet-name>
+        <servlet-class>controller.ViewAttendanceController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>loginController</servlet-name>
@@ -16,9 +24,17 @@
         <servlet-name>TimeTableController</servlet-name>
         <url-pattern>/timetable</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AttendanceController</servlet-name>
+        <url-pattern>/attend</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewAttendanceController</servlet-name>
+        <url-pattern>/view-attendance</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+           120
         </session-timeout>
     </session-config>
 </web-app>
