@@ -1,0 +1,15 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../img/fpt_university.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.choose-class {
+    text-align: center; /* Center text horizontally */
+}
+.choose-class input[type="submit"] {
+    margin-top: 10px; /* Adjust the margin as needed */
+}

@@ -10,7 +10,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Attendance;
 import model.Group;
+import model.Session;
+import model.Student;
+import model.Subject;
 
 /**
  *
@@ -40,22 +44,59 @@ public class GroupDBContext extends DBContext<Group> {
 
     @Override
     public ArrayList<Group> list() {
+        ArrayList<Group> groups = new ArrayList<>();
         try {
-            ArrayList<Group> groups = new ArrayList<>();
-            String sql = "SELECT [gid]\n"
-                    + "      ,[gname]\n"
-                    + "      ,[subid]\n"
-                    + "      ,[sup_iis]\n"
-                    + "  FROM [FALL2023_Assignment].[dbo].[Group]";
+            String sql = "SELECT g.[gname], s.[subname] \n"
+                    + "FROM [Group] g\n"
+                    + "INNER JOIN Subject s ON g.subid = s.subid;";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-
+                Group g = new Group();
+                g.setName(rs.getString("gname"));
+                Subject s = new Subject();
+                s.setName(rs.getString("subname"));
+                g.setSubject(s);
+                groups.add(g);
             }
         } catch (SQLException ex) {
             Logger.getLogger(GroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return groups;
+    }
 
+    public Group listViewAttendance(String gname, String subname) throws SQLException {
+        Group group = new Group();
+        ArrayList<Session> sessions = new ArrayList<>();
+        ArrayList<Attendance> attendances = new ArrayList<>();
+        String sql = "SELECT g.[gname], s.[subname] , stu.[stuid],stu.[stuname],ses.[index],a.[status]\n"
+                + "FROM [Group] g\n"
+                + "INNER JOIN Subject s ON g.subid = s.subid\n"
+                + "INNER JOIN Group_Student gs ON gs.gid = g.gid\n"
+                + "INNER JOIN Student stu ON stu.stuid = gs.stuid\n"
+                + "INNER JOIN Session ses ON ses.gid = g.gid\n"
+                + "INNER JOIN Attendance a ON ses.sesid = a.sesid AND a.stuid = stu.stuid\n"
+                + "WHERE g.gname=? AND s.subname=?";
+        PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setString(1, gname);
+        stm.setString(2, subname);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            Student stu = new Student();
+            stu.setId(rs.getInt("stuid"));
+            stu.setName(rs.getString("stuname"));
+            Attendance att = new Attendance();
+            att.setStudent(stu);
+            att.setStatus(rs.getBoolean("status"));
+            attendances.add(att);
+            Session ses = new Session();
+            ses.setIndex(rs.getInt("index"));
+            ses.setAtts(attendances);
+            
+            sessions.add(ses);
+            group.setSessions(sessions);
+        }
+        return group;
     }
 
 }
