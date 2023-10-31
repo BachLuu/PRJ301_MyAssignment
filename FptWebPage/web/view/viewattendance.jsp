@@ -14,40 +14,53 @@ Author : Luu Bach
         <title>View Attendance</title>
     </head>
     <body>
-        <div class="choose-class">
-            <form action="view-attendance" method="POST">
+        <div style="display: flex; flex-direction: column;">
+            <div class="choose-class">
+                <form action="view-attendance" method="POST">
+                    <table border="1px">
+                        <tr>
+                            <th>Class</th>
+                        </tr>
+                        <c:forEach items="${requestScope.groups}" var="g">
+                            <tr>
+                                <td><input type="radio" name="class"
+                                           value="${g.name}-${g.subject.name}" />${g.name}-${g.subject.name}
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                    <input type="submit" value="View" />
+                </form>
+            </div>
+            <div>
                 <table border="1px">
                     <tr>
-                        <th>Class</th>
+                        <th>Student Id</th>
+                        <th>Student Name</th>
+                            <c:forEach items="${requestScope.group.sessions}"
+                                       var="ses">
+                            <th>Lesson No.${ses.index}</th>
+                            </c:forEach>
+                        <th>Total Absent</th>
                     </tr>
-                    <c:forEach items="${requestScope.groups}" var="g">
+                    <c:forEach items="${requestScope.group.students}" var="stu">
                         <tr>
-                            <td><input type="radio" name="class"
-                                       value="${g.name}-${g.subject.name}" />${g.name}-${g.subject.name}
-                            </td>
+                            <td>${stu.id}</td>
+                            <td>${stu.name}</td>
+                            <c:forEach items="${requestScope.group.sessions}" var="ses">
+                                <c:forEach items="${ses.atts}" var="att">
+                                    <c:if test="${att.student.id eq stu.id}">
+                                        <td>${att.status ? 'present' : 'absent'}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </c:forEach>
+                            <td <c:if test="${stu.absentPercent > 20}">style="color: red"</c:if>>
+                                ${stu.absentPercent}%
+                            </td>                            
                         </tr>
                     </c:forEach>
                 </table>
-                <input type="submit" value="View" />
-            </form>
+            </div>
         </div>
-        <table>
-            <tr>
-                <th>Student Id</th>
-                <th>Student Name</th>
-                <th>Lession Number</th>
-                <th>Total Absent</th>
-                <th>Status</th>
-            </tr>
-            <tr>
-                <c:forEach items="requestScope.group.sessions.atts.student" var="stu" >
-                    <td>${stu.id}</td>
-                    <td>${stu.name}</td>
-                </c:forEach>
-            </tr>
-
-
-        </table>
-
     </body>
 </html>

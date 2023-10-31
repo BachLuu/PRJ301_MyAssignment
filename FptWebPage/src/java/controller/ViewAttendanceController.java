@@ -16,7 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Attendance;
 import model.Group;
+import model.Session;
+import model.Student;
+import model.StudentReport;
 
 /**
  *
@@ -79,16 +83,30 @@ public class ViewAttendanceController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        GroupDBContext groupDB = new GroupDBContext();
+        ArrayList<Group> groups = groupDB.list();
+        request.setAttribute("groups", groups);
         String class_raw = request.getParameter("class");
         String[] values = class_raw.split("-");
         String groupName_raw = values[0];       // Separate variable for g.name
         String subjectName_raw = values[1];     // Separate variable for g.subject.name
-        GroupDBContext groupDB = new GroupDBContext();
         try {
             Group groupViewAtt = groupDB.listViewAttendance(groupName_raw, subjectName_raw);
+            for (Student st : groupViewAtt.getStudents()) {
+                float absent = 0;
+                for (Session ses : groupViewAtt.getSessions()) {
+                    for (Attendance att : ses.getAtts()) {
+                        if (att.getStudent().getId() == st.getId() && !att.isStatus()) {
+                            absent++;
+                            st.setAbsentPercent(absent * 100 / groupViewAtt.getSessions().size());
+                        }
+                    }
+                }
+            }
+//            response.getWriter().print(groupViewAtt.getStudents().get(2).getAbsent());
+//            request.setAttribute("reports", srs);
             request.setAttribute("group", groupViewAtt);
-            response.getWriter().println(groupViewAtt.getSessions().size());
-//            request.getRequestDispatcher("view/viewattendance.jsp").forward(request, response);
+            request.getRequestDispatcher("view/viewattendance.jsp").forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(ViewAttendanceController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -5,16 +5,34 @@
 package model;
 
 import java.util.ArrayList;
-import model.IBaseModel;
 
 /**
  *
  * @author sonnt
  */
-public class Student implements IBaseModel{
+public class Student implements IBaseModel {
+
     private int id;
     private String name;
     private ArrayList<Group> groups = new ArrayList<>();
+    private float absentPercent;
+//    private StudentReport report;
+//
+//    public StudentReport getSr() {
+//        return report;
+//    }
+//
+//    public void setSr(StudentReport sr) {
+//        this.report = sr;
+//    }
+
+    public float getAbsentPercent() {
+        return absentPercent;
+    }
+
+    public void setAbsentPercent(float absentPercent) {
+        this.absentPercent = absentPercent;
+    }
 
     public int getId() {
         return id;
@@ -39,5 +57,5 @@ public class Student implements IBaseModel{
     public void setGroups(ArrayList<Group> groups) {
         this.groups = groups;
     }
-    
+
 }

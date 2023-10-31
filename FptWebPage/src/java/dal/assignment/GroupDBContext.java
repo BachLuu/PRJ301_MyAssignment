@@ -67,8 +67,9 @@ public class GroupDBContext extends DBContext<Group> {
 
     public Group listViewAttendance(String gname, String subname) throws SQLException {
         Group group = new Group();
+        ArrayList<Student> students = getStudentsInGroup(gname, subname);
         ArrayList<Session> sessions = new ArrayList<>();
-        ArrayList<Attendance> attendances = new ArrayList<>();
+        int groupSize = students.size();
         String sql = "SELECT g.[gname], s.[subname] , stu.[stuid],stu.[stuname],ses.[index],a.[status]\n"
                 + "FROM [Group] g\n"
                 + "INNER JOIN Subject s ON g.subid = s.subid\n"
@@ -82,6 +83,11 @@ public class GroupDBContext extends DBContext<Group> {
         stm.setString(2, subname);
         ResultSet rs = stm.executeQuery();
         while (rs.next()) {
+            ArrayList<Attendance> attendances = new ArrayList<>();
+            Session ses = new Session();
+            ses.setIndex(rs.getInt("index"));
+            ses.setAtts(attendances);
+            sessions.add(ses);
             Student stu = new Student();
             stu.setId(rs.getInt("stuid"));
             stu.setName(rs.getString("stuname"));
@@ -89,14 +95,41 @@ public class GroupDBContext extends DBContext<Group> {
             att.setStudent(stu);
             att.setStatus(rs.getBoolean("status"));
             attendances.add(att);
-            Session ses = new Session();
-            ses.setIndex(rs.getInt("index"));
-            ses.setAtts(attendances);
-            
-            sessions.add(ses);
-            group.setSessions(sessions);
+            for (int i = 1; i <= groupSize - 1; i++) {
+                if (rs.next()) {
+                    Student stu_next = new Student();
+                    stu_next.setId(rs.getInt("stuid"));
+                    stu_next.setName(rs.getString("stuname"));
+                    Attendance att_next = new Attendance();
+                    att_next.setStudent(stu_next);
+                    att_next.setStatus(rs.getBoolean("status"));
+                    attendances.add(att_next);
+                }
+            }
         }
+        group.setSessions(sessions);
+        group.setStudents(students);
         return group;
+    }
+
+    private ArrayList<Student> getStudentsInGroup(String gname, String subname) throws SQLException {
+        ArrayList<Student> students = new ArrayList<>();
+        String sql = "SELECT g.gid,g.gname, stu.stuid,stu.stuname \n"
+                + "FROM [Group] g\n"
+                + "INNER JOIN Group_Student gs ON gs.gid= g.gid\n"
+                + "INNER JOIN Student stu ON stu.stuid= gs.stuid\n"
+                + "WHERE g.gname=?";
+        PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setString(1, gname);
+        ResultSet rs = stm.executeQuery();
+        int size = 0;
+        while (rs.next()) {
+            Student stu = new Student();
+            stu.setId(rs.getInt("stuid"));
+            stu.setName(rs.getString("stuname"));
+            students.add(stu);
+        }
+        return students;
     }
 
 }
