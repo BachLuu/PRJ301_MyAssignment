@@ -47,7 +47,9 @@ public class LoginController extends HttpServlet {
         ad.setUsername(username_raw);
         ad.setPassword(password_raw);
         if (a.get(ad) == null) {
-            response.getWriter().println("Invalid username or password!");
+            String invalidAccount = "Invalid username or password";
+            request.setAttribute("invalidAccount", invalidAccount);
+            request.getRequestDispatcher("view/login.jsp").forward(request, response);
         } else {
             if (remember != null) {
                 Cookie c_user = new Cookie("user", username_raw);

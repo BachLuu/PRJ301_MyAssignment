@@ -28,13 +28,12 @@
         <nav>
             <div class="links-container">
                 <div class="main-links">
-
                     <a href="../timetable?iid=${sessionScope.iid}">Schedule</a>
                     <a href="../view-attendance">Attendance Report</a>
                     <div class="user-menu">
                         <a href="#" class="user-icon"><i class="fas fa-user"></i></a>
                         <div class="dropdown">
-                            <a href="../login"><i class="fas fa-sign-in-alt"></i> Log in</a>
+                            <a href="../login"><i class="fas fa-sign-in-alt"></i> Change Account</a>
                             <a href="../logout"><i class="fas fa-sign-out-alt"></i> Log out</a>
                         </div>
                     </div>

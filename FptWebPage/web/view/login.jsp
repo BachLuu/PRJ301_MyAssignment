@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,6 +18,11 @@
                     <div class="remember-section">
                         <input type="checkbox" name="remember" value="remember" id="remember-checkbox">
                         <label for="remember-checkbox">Remember in this computer.</label>
+                    </div><br>
+                    <div>
+                        <c:if test="${requestScope.invalidAccount != null}">
+                            <p style="color:red">${invalidAccount}</p>
+                        </c:if>
                     </div>
                     <button class="login-btn" type="submit">LOGIN</button>
                 </form>
