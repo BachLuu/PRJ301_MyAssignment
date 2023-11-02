@@ -8,6 +8,7 @@ package controller;
 import dal.assignment.AdminDBContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,11 +36,11 @@ public class LoginController extends HttpServlet {
         request.getRequestDispatcher("view/login.jsp").forward(request, response);
     }
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         AdminDBContext a = new AdminDBContext();
+        String remember = request.getParameter("remember");
         String username_raw = request.getParameter("username");
         String password_raw = request.getParameter("password");
         Admin ad = new Admin();
@@ -48,6 +49,14 @@ public class LoginController extends HttpServlet {
         if (a.get(ad) == null) {
             response.getWriter().println("Invalid username or password!");
         } else {
+            if (remember != null) {
+                Cookie c_user = new Cookie("user", username_raw);
+                Cookie c_pass = new Cookie("pass", password_raw);
+                c_user.setMaxAge(24 * 3600);
+                c_pass.setMaxAge(24 * 3600);
+                response.addCookie(c_user);
+                response.addCookie(c_pass);
+            }
             HttpSession session = request.getSession();
             session.setAttribute("iid", a.get(ad).getId());
             response.sendRedirect("view/home.jsp");
