@@ -29,19 +29,14 @@ public class LogoutController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LogoutController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LogoutController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        request.getSession().invalidate();
+        Cookie c_user = new Cookie("user", null);
+        Cookie c_pass = new Cookie("pass", null);
+        c_user.setMaxAge(-1);
+        c_pass.setMaxAge(-1);
+        response.addCookie(c_pass);
+        response.addCookie(c_user);
+        response.sendRedirect("login");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -56,14 +51,7 @@ public class LogoutController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getSession().setAttribute("iid", null);
-        Cookie c_user = new Cookie("user", null);
-        Cookie c_pass = new Cookie("pass", null);
-        c_user.setMaxAge(-1);
-        c_pass.setMaxAge(-1);
-        response.addCookie(c_pass);
-        response.addCookie(c_user);
-        response.sendRedirect("view/home.jsp");
+        processRequest(request, response);
     }
 
     /**

@@ -13,52 +13,79 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Trang chủ - Điểm danh</title>        
         <link rel="stylesheet" type="text/css" href="../style/home.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">        
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>       
-    </head>
 
+    </head>
     <body>
-        <header>
-            <div class="header-content">
-                <img src="../img/LOGO-FPT-University.jpg" class="logo" />
-                <h2>Welcome to FPT University</h2>
+        <div class="left-header" id="header">
+            <div class="header-text">
+                <img src="../img/logo-fpt-university.jpg" alt="logo-fpt"/>
             </div>
-        </header>
-        <nav>
-            <div class="links-container">
-                <div class="main-links">
-                    <a href="../timetable?iid=${sessionScope.iid}">Schedule</a>
-                    <a href="../view-attendance">Attendance Report</a>
-                    <div class="user-menu">
-                        <a href="#" class="user-icon"><i class="fas fa-user"></i></a>
-                        <div class="dropdown">
-                            <a href="../login"><i class="fas fa-sign-in-alt"></i> Change Account</a>
-                            <a href="../logout"><i class="fas fa-sign-out-alt"></i> Log out</a>
-                        </div>
+            <div class="menu-item" id="home">
+                <img src="../img/home-icon.png" alt="Home" style="display: inline-block; vertical-align: middle;width:30%;margin-top: -10px;margin-left: -10px;"/>
+                <a href="../view/home.jsp" style="margin-left: -27px;">Home</a>
+            </div>
+            <div class="menu-item" id="schedule">
+                <img src="../img/calendar-icon.png" alt="Home" style="display: inline-block; vertical-align: middle;width:30%;margin-left: -12px;margin-top: -10px"/>
+                <a href="../timetable?iid=${sessionScope.iid}" style="margin-left: -27px;">Schedule</a>
+            </div>
+            <div class="menu-item" id="attendance">
+                <img src="../img/report-icon.png" alt="Home" style="display: inline-block; vertical-align: middle;width:27%;margin-top: -7px;margin-left: -10px;"/>
+                <a href="../view-attendance" style="margin-left: -27px;">Report</a>
+            </div>
+            <div class="menu-item" id="logout">
+                <img src="../img/logout-icon.png" alt="Home" style="display: inline-block; vertical-align: middle;width:28%;margin-top:-8px;margin-left: -7px;"/>
+                <a href="../logout" style="margin-left: -27px;">Log out</a>
+            </div>
+            <div class="menu-item">
+                <div class="icon-home">
+                    <div id="username">
+                        <img src="../img/icon-user.png" alt="Home" style="display: inline-block; vertical-align: middle;width:30%;margin-top: 5px;margin-left: -10px;"/>
+                        <p style="display: inline-block; vertical-align: middle;color: black;margin-left: -27px;">${sessionScope.username}</p>
                     </div>
                 </div>
             </div>
-        </nav>
-        <div class="content">
-            <img src="../img/fpt_university.jpg" alt="Image Description" />
         </div>
-        <footer>
-            <p>FPT University</p>
-        </footer>
-
+        <div class="content">
+            <img src="../img/fpt-university.jpg" alt="Image Description" />
+        </div>
         <script>
-            $(document).ready(function () {
-                $(".user-menu").hover(function () {
-                    $(".dropdown").toggle();
-                });
+            const home = document.getElementById('home');
+            const schedule = document.getElementById('schedule');
+            const attendance = document.getElementById('attendance');
+            const username = document.getElementById('username');
+            const logout = document.getElementById('logout');
 
-                $(".user-icon").click(function (event) {
-                    event.preventDefault();
-                    $(".dropdown").toggle();
-                });
+            home.addEventListener('mouseover', function () {
+                home.style.backgroundColor = 'chocolate';
+            });
+
+            home.addEventListener('mouseout', function () {
+                home.style.backgroundColor = '';
+            });
+
+            schedule.addEventListener('mouseover', function () {
+                schedule.style.backgroundColor = 'chocolate';
+            });
+
+            schedule.addEventListener('mouseout', function () {
+                schedule.style.backgroundColor = '';
+            });
+
+            attendance.addEventListener('mouseover', function () {
+                attendance.style.backgroundColor = 'chocolate';
+            });
+
+            attendance.addEventListener('mouseout', function () {
+                attendance.style.backgroundColor = '';
+            });
+
+            logout.addEventListener('mouseover', function () {
+                logout.style.backgroundColor = 'chocolate';
+            });
+
+            logout.addEventListener('mouseout', function () {
+                logout.style.backgroundColor = '';
             });
         </script>
-
     </body>
 </html>

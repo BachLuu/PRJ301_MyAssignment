@@ -61,6 +61,7 @@ public class LoginController extends HttpServlet {
             }
             HttpSession session = request.getSession();
             session.setAttribute("iid", a.get(ad).getId());
+            session.setAttribute("username", username_raw);
             response.sendRedirect("view/home.jsp");
         }
     }

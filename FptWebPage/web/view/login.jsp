@@ -9,12 +9,13 @@
         <title>Login Form</title>
     </head>
     <body>
+        <c:set var="cookies" value="${pageContext.request.cookies}"/>
         <div class="wrapper">
             <div class="login-container">
-                <img src="img/LOGO-FPT-University.jpg"/>
+                <img src="img/LOGO-FPT-University-login.jpg"/>
                 <form action="login" method="post">
-                    <input type="text" class="login-input" placeholder="Username" name="username">
-                    <input type="password" class="login-input" placeholder="Password" name="password">
+                    <input type="text" class="login-input" placeholder="Username" name="username" value="${cookie.user.value}">
+                    <input type="password" class="login-input" placeholder="Password" name="password" value="${cookie.pass.value}">
                     <div class="remember-section">
                         <input type="checkbox" name="remember" value="remember" id="remember-checkbox">
                         <label for="remember-checkbox">Remember in this computer.</label>
@@ -27,7 +28,6 @@
                     <button class="login-btn" type="submit">LOGIN</button>
                 </form>
             </div>
-            <img src="img/login_side.png" alt="Background Image"/>
         </div>
         <script>
             document.querySelector(".login-btn").addEventListener("mouseenter", function () {
