@@ -14,6 +14,9 @@
         <link rel="stylesheet" type="text/css" href="style/timetable.css">
     </head>
     <body>
+        <header>
+            <div class="Header">Schedule</div>
+        </header>
         <div class="left-header" id="header">
             <div class="header-text">
                 <img src="img/logo-fpt-university.jpg" alt="logo-fpt"/>
@@ -82,8 +85,8 @@
                 logout.style.backgroundColor = '';
             });
         </script>
-        <div style="margin-left:15%;">
-            <div style="text-align: center">
+        <div class="time-table">
+            <div style="">
                 <form action="timetable" method="GET">
                     <input type="hidden" name="iid" value="${sessionScope.iid}"/>
                     From <input type="date" value="${requestScope.from}" name="from"/> 
@@ -91,7 +94,7 @@
                     <input type="submit" value="View"/>
                 </form>
             </div>
-            <table border="1px">
+            <table id="table-date" border="1px" style="overflow-x:auto; ">
                 <tr>
                     <th>Slot</th>
                         <c:forEach items="${requestScope.dates}" var="d">

@@ -71,3 +71,16 @@ body {
 .icon-home img{
     width: 30%;
 }
+
+.Header{
+    text-align: center;
+    background-color: #d2691e;
+    color: white;
+    padding: 10px;
+    font-size: 30px;
+    padding-right: 1000px;
+    padding-left: 1000px;
+    position: fixed;
+    top: 0px;
+    left:-300px;
+}

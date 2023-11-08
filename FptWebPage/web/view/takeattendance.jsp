@@ -14,6 +14,9 @@
         <title>Take Attendance</title>
     </head>
     <body>
+        <header>
+            <div class="Header">Take Attendance</div>
+        </header>
         <div class="left-header" id="header">
             <div class="header-text">
                 <img src="img/logo-fpt-university.jpg" alt="logo-fpt"/>
@@ -82,8 +85,8 @@
                 logout.style.backgroundColor = '';
             });
         </script>
-        <div style="margin-left: 15%;">
-            ${requestScope.ses.group.name}-${requestScope.ses.group.subject.name}-${requestScope.ses.room.id}
+        <div style="margin-left: 15%;margin-top: 200px;">
+            Class:${requestScope.ses.group.name}-${requestScope.ses.group.subject.name}-${requestScope.ses.room.id}
             <form action="attend" method="POST">
                 <table border="1px">
                     <tr>
@@ -116,7 +119,9 @@
                     </c:forEach>
                 </table>
                 <input type="hidden" value="${requestScope.ses.id}" name="sesid"/>
-                <input type="submit" value="Save"/>
+                <div style="text-align: center;">
+                    <input type="submit" value="Save"/>
+                </div>            
             </form>
         </div>
     </body>

@@ -191,4 +191,26 @@ public class SessionDBContext extends DBContext<Session> {
             }
         }
     }
+
+    public ArrayList<Integer> getSessionIds(int id) throws SQLException {
+        String sql = "SELECT [sesid]\n"
+                + "      ,[gid]\n"
+                + "      ,[index]\n"
+                + "      ,[date]\n"
+                + "      ,[tid]\n"
+                + "      ,[rid]\n"
+                + "      ,[iid]\n"
+                + "      ,[isAtt]\n"
+                + "  FROM [Session] ses\n"
+                + "\n"
+                + "WHERE ses.iid= ?;";
+        PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setInt(1, id);
+        ResultSet rs = stm.executeQuery();
+        ArrayList<Integer> ids = new ArrayList<>();
+        while (rs.next()) {
+            ids.add(rs.getInt("sesid"));
+        }
+        return ids;
+    }
 }

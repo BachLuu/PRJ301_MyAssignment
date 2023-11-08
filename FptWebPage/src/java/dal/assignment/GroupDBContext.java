@@ -42,14 +42,16 @@ public class GroupDBContext extends DBContext<Group> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    @Override
-    public ArrayList<Group> list() {
+    public ArrayList<Group> list(int iid) {
         ArrayList<Group> groups = new ArrayList<>();
         try {
-            String sql = "SELECT g.[gname], s.[subname] \n"
+            String sql = "USE FALL2023_Assignment\n"
+                    + "SELECT g.gname, s.subname,g.sup_iis\n"
                     + "FROM [Group] g\n"
-                    + "INNER JOIN Subject s ON g.subid = s.subid;";
+                    + "INNER JOIN Subject s ON g.subid = s.subid\n"
+                    + "WHERE g.sup_iis= ?";
             PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, iid);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Group g = new Group();
@@ -70,14 +72,16 @@ public class GroupDBContext extends DBContext<Group> {
         ArrayList<Student> students = getStudentsInGroup(gname, subname);
         ArrayList<Session> sessions = new ArrayList<>();
         int groupSize = students.size();
-        String sql = "SELECT g.[gname], s.[subname] , stu.[stuid],stu.[stuname],ses.[index],a.[status]\n"
+        String sql
+                = "SELECT g.gname, s.subname, ses.[index], stu.stuname,stu.stuid , a.status,ses.isAtt\n"
                 + "FROM [Group] g\n"
                 + "INNER JOIN Subject s ON g.subid = s.subid\n"
                 + "INNER JOIN Group_Student gs ON gs.gid = g.gid\n"
                 + "INNER JOIN Student stu ON stu.stuid = gs.stuid\n"
                 + "INNER JOIN Session ses ON ses.gid = g.gid\n"
                 + "INNER JOIN Attendance a ON ses.sesid = a.sesid AND a.stuid = stu.stuid\n"
-                + "WHERE g.gname=? AND s.subname=?";
+                + "WHERE g.gname = ? AND s.subname = ?\n"
+                + "ORDER BY ses.[index];";
         PreparedStatement stm = connection.prepareStatement(sql);
         stm.setString(1, gname);
         stm.setString(2, subname);
@@ -87,6 +91,7 @@ public class GroupDBContext extends DBContext<Group> {
             Session ses = new Session();
             ses.setIndex(rs.getInt("index"));
             ses.setAtts(attendances);
+            ses.setIsAttend(rs.getBoolean("isAtt"));
             sessions.add(ses);
             Student stu = new Student();
             stu.setId(rs.getInt("stuid"));
@@ -122,7 +127,6 @@ public class GroupDBContext extends DBContext<Group> {
         PreparedStatement stm = connection.prepareStatement(sql);
         stm.setString(1, gname);
         ResultSet rs = stm.executeQuery();
-        int size = 0;
         while (rs.next()) {
             Student stu = new Student();
             stu.setId(rs.getInt("stuid"));
@@ -130,6 +134,11 @@ public class GroupDBContext extends DBContext<Group> {
             students.add(stu);
         }
         return students;
+    }
+
+    @Override
+    public ArrayList<Group> list() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

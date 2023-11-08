@@ -4,6 +4,7 @@
  */
 package filter;
 
+import dal.assignment.SessionDBContext;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -17,6 +18,10 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.tomcat.jni.SSLContext;
 
 /**
@@ -109,12 +114,25 @@ public class HomeFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
         String uri = req.getServletPath();
         HttpSession session = req.getSession();
-        if (session.getAttribute("iid") == null && !uri.contains("/login") && uri.contains("/view")) {
-            res.sendRedirect("../login");
+        SessionDBContext sessionDB = new SessionDBContext();
+        try {
+            if (session.getAttribute("iid") == null && !uri.contains("/login") && uri.contains("/view")) {
+                res.sendRedirect("../login");
+            } else if (session.getAttribute("iid") == null && !uri.contains("/login")) {
+                res.sendRedirect("/FptWebPage/login");
+            } else if (req.getParameter("iid") != null) {
+                if (Integer.parseInt(req.getParameter("iid")) != (int) session.getAttribute("iid")) {
+                    res.sendRedirect("view/home.jsp");
+                }
+            } else if (req.getParameter("id") != null) {
+                ArrayList<Integer> sessionIds = sessionDB.getSessionIds((int) session.getAttribute("iid"));
+                if (!isParamIdExist(req.getParameter("id"), sessionIds)) {
+                    res.sendRedirect("view/home.jsp");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(HomeFilter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        else if (session.getAttribute("iid") == null && !uri.contains("/login")) {
-            res.sendRedirect("/FptWebPage/login");
-        }   
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
@@ -235,6 +253,15 @@ public class HomeFilter implements Filter {
 
     public void log(String msg) {
         filterConfig.getServletContext().log(msg);
+    }
+
+    private boolean isParamIdExist(String id, ArrayList<Integer> sessionIds) {
+        for (int i : sessionIds) {
+            if (Integer.parseInt(id) == i) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

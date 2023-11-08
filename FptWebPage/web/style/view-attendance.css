@@ -13,10 +13,8 @@ body {
 }
 
 .choose-class {
+    margin-left: -300px;
     text-align: center; /* Center text horizontally */
-}
-.choose-class input[type="submit"] {
-    margin-top: 10px; /* Adjust the margin as needed */
 }
 
 body {
@@ -71,3 +69,22 @@ body {
 .icon-home img{
     width: 30%;
 }
+
+.Header{
+    background-color: #d2691e;
+    color: white;
+    padding: 15px;
+    font-size: 40px;
+    padding-right: 1000px;
+    padding-left: 1000px;
+    position: fixed;
+    top: 0px;
+    left:-300px;
+}
+
+.Content{
+    display: flex;
+    justify-content: space-between;
+    padding: 100px;
+}
+

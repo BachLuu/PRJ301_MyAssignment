@@ -14,6 +14,9 @@ Author : Luu Bach
         <title>View Attendance</title>
     </head>
     <body>
+        <header>
+            <div class="Header">Report</div>
+        </header>
         <div class="left-header" id="header">
             <div class="header-text">
                 <img src="img/logo-fpt-university.jpg" alt="logo-fpt"/>
@@ -82,7 +85,7 @@ Author : Luu Bach
                 logout.style.backgroundColor = '';
             });
         </script>
-        <div style="margin-left: 15%;">
+        <div class="Content" style="margin-left: 15%;">
             <div class="choose-class">
                 <form action="view-attendance" method="POST">
                     <table border="1px">
@@ -117,9 +120,14 @@ Author : Luu Bach
                             <td>${stu.name}</td>
                             <c:forEach items="${requestScope.group.sessions}" var="ses">
                                 <c:forEach items="${ses.atts}" var="att">
-                                    <c:if test="${att.student.id eq stu.id}">
-                                        <td>${att.status ? 'present' : 'absent'}</td>
-                                    </c:if>
+                                    <c:choose>
+                                        <c:when test="${!ses.isAttend && att.student.id eq stu.id}">
+                                            <td style="color: gray;">not yet</td>
+                                        </c:when>
+                                        <c:when test="${att.student.id eq stu.id}">
+                                            <td>${att.status ? 'present' : 'absent'}</td>
+                                        </c:when>
+                                    </c:choose>
                                 </c:forEach>
                             </c:forEach>
                             <td <c:if test="${stu.absentPercent > 20}">style="color: red"</c:if>>

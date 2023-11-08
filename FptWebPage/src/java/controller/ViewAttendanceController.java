@@ -20,39 +20,12 @@ import model.Attendance;
 import model.Group;
 import model.Session;
 import model.Student;
-import model.StudentReport;
 
 /**
  *
  * @author Luu Bach
  */
 public class ViewAttendanceController extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ViewAttendanceController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ViewAttendanceController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -66,8 +39,9 @@ public class ViewAttendanceController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int iid = (int) request.getSession().getAttribute("iid");
         GroupDBContext groupDB = new GroupDBContext();
-        ArrayList<Group> groups = groupDB.list();
+        ArrayList<Group> groups = groupDB.list(iid);
         request.setAttribute("groups", groups);
         request.getRequestDispatcher("view/viewattendance.jsp").forward(request, response);
     }
@@ -83,8 +57,9 @@ public class ViewAttendanceController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int iid = (int) request.getSession().getAttribute("iid");
         GroupDBContext groupDB = new GroupDBContext();
-        ArrayList<Group> groups = groupDB.list();
+        ArrayList<Group> groups = groupDB.list(iid);
         request.setAttribute("groups", groups);
         String class_raw = request.getParameter("class");
         String[] values = class_raw.split("-");
@@ -96,14 +71,15 @@ public class ViewAttendanceController extends HttpServlet {
                 float absent = 0;
                 for (Session ses : groupViewAtt.getSessions()) {
                     for (Attendance att : ses.getAtts()) {
-                        if (att.getStudent().getId() == st.getId() && !att.isStatus()) {
+                        if (att.getStudent().getId() == st.getId() && !att.isStatus() && ses.isIsAttend()) {
                             absent++;
                             st.setAbsentPercent(absent * 100 / groupViewAtt.getSessions().size());
                         }
                     }
                 }
             }
-//            response.getWriter().print(groupViewAtt.getStudents().get(2).getAbsent());
+//            response.getWriter().print(groupViewAtt.getStudents().size());
+//            response.getWriter().print(groupViewAtt.getSessions().size());
 //            request.setAttribute("reports", srs);
             request.setAttribute("group", groupViewAtt);
             request.getRequestDispatcher("view/viewattendance.jsp").forward(request, response);
