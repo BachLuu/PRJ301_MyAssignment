@@ -1,5 +1,3 @@
-
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -13,13 +11,23 @@ import model.IBaseModel;
  *
  * @author sonnt
  */
-public class Group implements IBaseModel{
+public class Group implements IBaseModel {
+
     private int id;
     private String name;
     private Instructor supervisor;
     private ArrayList<Student> students = new ArrayList<>();
     private Subject subject;
     private ArrayList<Session> sessions = new ArrayList<>();
+    private boolean finished;
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
 
     public int getId() {
         return id;
@@ -68,5 +76,5 @@ public class Group implements IBaseModel{
     public void setSessions(ArrayList<Session> sessions) {
         this.sessions = sessions;
     }
-    
+
 }

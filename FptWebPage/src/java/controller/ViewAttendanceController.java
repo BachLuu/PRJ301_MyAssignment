@@ -20,6 +20,7 @@ import model.Attendance;
 import model.Group;
 import model.Session;
 import model.Student;
+import model.StudentReport;
 
 /**
  *
@@ -65,22 +66,27 @@ public class ViewAttendanceController extends HttpServlet {
         String[] values = class_raw.split("-");
         String groupName_raw = values[0];       // Separate variable for g.name
         String subjectName_raw = values[1];     // Separate variable for g.subject.name
+        ArrayList<StudentReport> reports = new ArrayList<>();
         try {
             Group groupViewAtt = groupDB.listViewAttendance(groupName_raw, subjectName_raw);
             for (Student st : groupViewAtt.getStudents()) {
                 float absent = 0;
+                StudentReport report = new StudentReport();
                 for (Session ses : groupViewAtt.getSessions()) {
                     for (Attendance att : ses.getAtts()) {
                         if (att.getStudent().getId() == st.getId() && !att.isStatus() && ses.isIsAttend()) {
                             absent++;
-                            st.setAbsentPercent(absent * 100 / groupViewAtt.getSessions().size());
+                            report.setGroup(groupViewAtt);
+                            report.setAbsentPercent(absent * 100 / groupViewAtt.getSessions().size());
+                            report.setStudent(st);
+                            reports.add(report);
                         }
                     }
                 }
+                st.setReport(report);
             }
-//            response.getWriter().print(groupViewAtt.getStudents().size());
-//            response.getWriter().print(groupViewAtt.getSessions().size());
-//            request.setAttribute("reports", srs);
+         
+//            response.getWriter().print(groupViewAtt.getStudents().get(0).getReport());
             request.setAttribute("group", groupViewAtt);
             request.getRequestDispatcher("view/viewattendance.jsp").forward(request, response);
         } catch (SQLException ex) {

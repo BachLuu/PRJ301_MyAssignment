@@ -15,23 +15,14 @@ public class Student implements IBaseModel {
     private int id;
     private String name;
     private ArrayList<Group> groups = new ArrayList<>();
-    private float absentPercent;
-//    private StudentReport report;
-//
-//    public StudentReport getSr() {
-//        return report;
-//    }
-//
-//    public void setSr(StudentReport sr) {
-//        this.report = sr;
-//    }
+    private StudentReport report;
 
-    public float getAbsentPercent() {
-        return absentPercent;
+    public StudentReport getReport() {
+        return report;
     }
 
-    public void setAbsentPercent(float absentPercent) {
-        this.absentPercent = absentPercent;
+    public void setReport(StudentReport report) {
+        this.report = report;
     }
 
     public int getId() {

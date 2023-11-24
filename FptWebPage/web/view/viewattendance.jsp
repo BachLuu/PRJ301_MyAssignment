@@ -12,6 +12,18 @@ Author : Luu Bach
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="style/view-attendance.css">
         <title>View Attendance</title>
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            table, th, td {
+                border: 1px solid black;
+                padding: 15px;
+                text-align: left;
+            }
+        </style>
     </head>
     <body>
         <header>
@@ -100,10 +112,12 @@ Author : Luu Bach
                             </tr>
                         </c:forEach>
                     </table>
-                    <input type="submit" value="View" />
+                    <div class="submit-button">
+                        <input type="submit" value="View"  />
+                    </div> 
                 </form>
             </div>
-            <div>
+            <div class="report-table">
                 <table border="1px">
                     <tr>
                         <th>Student Id</th>
@@ -130,12 +144,17 @@ Author : Luu Bach
                                     </c:choose>
                                 </c:forEach>
                             </c:forEach>
-                            <td <c:if test="${stu.absentPercent > 20}">style="color: red"</c:if>>
-                                ${stu.absentPercent}%
+                            <td <c:if test="${stu.report.absentPercent > 20}">style="color: red"</c:if>>
+                                ${stu.report.absentPercent}%
                             </td>                            
                         </tr>
                     </c:forEach>
                 </table>
+            </div>
+            <div class="report-hint">
+                <p>Accepted: <span class="dot green-dot"></span></p>
+                <p>Rejected: <span class="dot red-dot"></span></p>
+                <p>In Progress: <span class="dot gray-dot"></span></p>
             </div>
         </div>
     </body>
